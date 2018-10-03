@@ -529,6 +529,11 @@ typedef struct matrix{
     float **vals;
 } matrix;
 
+typedef struct {
+    int batch;
+    int h, w, c;
+    float *output;
+} layer_data;
 
 typedef struct{
     int w, h;
@@ -744,6 +749,7 @@ float *network_predict_image(network *net, image im);
 void network_detect(network *net, image im, float thresh, float hier_thresh, float nms, detection *dets);
 detection *get_network_boxes(network *net, int w, int h, float thresh, float hier, int *map, int relative, int *num);
 void free_detections(detection *dets, int n);
+layer_data export_layer_output(network *net, int n);
 
 void reset_network_state(network *net, int b);
 

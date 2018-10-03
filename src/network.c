@@ -757,6 +757,21 @@ float *network_output(network *net)
     return network_output_layer(net).output;
 }
 
+layer_data export_layer_output(network *net, int n)
+{
+    layer l = net->layers[n];
+    layer_data output;
+    output.batch = l.batch;
+    output.h = l.out_h;
+    output.w = l.out_w;
+    output.c = l.out_c;
+#ifdef GPU
+    cuda_pull_array(l.output_gpu, l.output, l.outputs*l.batch);
+#endif
+    output.output = l.output;
+    return output;
+}
+
 #ifdef GPU
 
 void forward_network_gpu(network *netp)
